@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Subham Biswal | Principal Engineer</title>
+<link rel="icon" type="image/png" href="subham-passport-official.jpg">
+<script>
+// Generate a crisp, rounded-rectangle favicon from the profile image
+(function(){
+  var img = new Image();
+  img.onload = function(){
+    var s = 64, r = 10, c = document.createElement('canvas');
+    c.width = s; c.height = s;
+    var ctx = c.getContext('2d');
+    // Draw rounded rectangle clip path
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.lineTo(s - r, 0);
+    ctx.quadraticCurveTo(s, 0, s, r);
+    ctx.lineTo(s, s - r);
+    ctx.quadraticCurveTo(s, s, s - r, s);
+    ctx.lineTo(r, s);
+    ctx.quadraticCurveTo(0, s, 0, s - r);
+    ctx.lineTo(0, r);
+    ctx.quadraticCurveTo(0, 0, r, 0);
+    ctx.closePath();
+    ctx.clip();
+    // Fill dark background
+    ctx.fillStyle = '#0A0A0A';
+    ctx.fillRect(0, 0, s, s);
+    // Draw image centered and cropped to face area
+    var scale = Math.max(s / img.width, s / img.height) * 1.3;
+    var w = img.width * scale, h = img.height * scale;
+    ctx.drawImage(img, (s - w) / 2, (s - h) / 2 - h * 0.05, w, h);
+    // Set as favicon
+    var link = document.querySelector("link[rel='icon']");
+    if(link) { link.type = 'image/png'; link.href = c.toDataURL('image/png'); }
+  };
+  img.src = 'subham-passport-official.jpg';
+})();
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Inter', sans-serif; }
+.font-grotesk { font-family: 'Space Grotesk', sans-serif; }
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+@keyframes slideUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+from { transform: scale(1.1); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+@keyframes shimmer {
+0% { background-position: -200% 0; }
+100% { background-position: 200% 0; }
+}
+.animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+.animate-scale-in { animation: scaleIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+.nav-item { color: rgba(245, 241, 232, 0.38); }
+.nav-item.active { color: #F5F1E8; }
+#card-stack { touch-action: none; user-select: none; overflow: visible; }
+.profile-card {
+transform-origin: center center;
+will-change: transform, opacity, filter;
+position: relative;
+border: 1px solid #cbd5e1;
+}
+.profile-card.animating {
+transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease, filter 0.55s ease;
+}
+.profile-card .card-dim { transition: opacity 0.55s ease; }
+.profile-card .floating-img {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%) translateY(40px) scale(0.85);
+    width: 75%;
+    aspect-ratio: 16/10;
+    border-radius: 6px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 60;
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.profile-card.card-active .floating-img {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-12px) scale(1);
+}
+.profile-card.card-active {
+    transform: translateX(0) scale(1) translateY(25px) !important;
+}
+/* Desktop: floating image moves to left of card */
+@media (min-width: 768px) {
+    .profile-card .floating-img {
+        left: auto;
+        bottom: auto;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%) translateX(40px) scale(0.85);
+        width: 280px;
+        aspect-ratio: 16/10;
+        margin-right: 20px;
+    }
+    .profile-card.card-active .floating-img {
+        transform: translateY(-50%) translateX(-12px) scale(1);
+    }
+    .profile-card.card-active {
+        transform: translateX(0) scale(1) translateY(0px) !important;
+    }
+}
+.panel-scroll::-webkit-scrollbar { width: 4px; }
+.panel-scroll::-webkit-scrollbar-thumb { background: rgba(245,241,232,0.15); border-radius: 999px; }
+
+/* Small phones only: keep the tall cards clear of the fixed navigation. */
+@media (max-width: 480px) {
+    #about-view {
+        padding-bottom: 8rem;
+    }
+
+    #about-view .about-card {
+        margin-top: 2rem;
+    }
+
+    #work-view .project-card-stack {
+        margin-top: 1rem;
+    }
+
+    #swipe-indicator {
+        bottom: 10rem;
+    }
+}
+</style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-[#050505] p-4 sm:p-8 pb-28 overflow-hidden">
+
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#C1272D]/10 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+    </div>
+
+    <div id="home-view" class="view relative z-10 w-full flex items-center justify-center">
+        <div class="relative w-full max-w-[400px] aspect-[4/5] shadow-2xl shadow-black/50 bg-[#0A0A0A] group transition-all duration-500 hover:shadow-[#C1272D]/20 animate-fade-in border border-[#cbd5e1] rounded-[6px]">
+            <div class="absolute inset-0 z-0 bg-[#0A0A0A] overflow-hidden">
+                <!-- Background Image (Top aligned) -->
+                <div class="absolute inset-x-0 top-0 h-[65%] w-full pointer-events-none p-4 pb-0 flex justify-center overflow-hidden">
+                    <img src="subham-passport-official.jpg" alt="Subham Biswal" class="w-auto h-[95%] object-contain object-top grayscale opacity-100 mix-blend-normal brightness-90">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0A0A]/40 to-[#0A0A0A]"></div>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent opacity-90"></div>
+                <div class="absolute bottom-0 right-0 w-3/4 h-1/2 bg-gradient-to-t from-[#C1272D]/30 to-transparent blur-2xl mix-blend-overlay"></div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 pb-8 z-20 flex flex-col items-center">
+                <div class="flex flex-col items-center text-center -space-y-2 mb-6 w-full">
+                    <h1 class="font-grotesk text-[4.2rem] leading-[0.9] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#F5F1E8] to-[#F5F1E8]/60 animate-slide-up delay-400 drop-shadow-2xl">SUBHAM</h1>
+                    <h2 class="font-grotesk text-[2.6rem] leading-[0.9] font-bold tracking-tighter text-[#C1272D] animate-slide-up delay-500 drop-shadow-[0_4px_24px_rgba(193,39,45,0.4)] relative">
+                        BISWAL
+                        <div class="absolute inset-0 bg-[#C1272D] blur-3xl opacity-20 -z-10"></div>
+                    </h2>
+                </div>
+                <button id="view-work-btn" type="button" class="w-auto animate-slide-up delay-700">
+                    <div class="relative group/card cursor-pointer overflow-hidden rounded-xl bg-[#1a1a1a]/60 backdrop-blur-xl border border-white/10 hover:bg-[#252525]/80 transition-all duration-300 hover:border-[#C1272D]/30 hover:shadow-[0_0_30px_rgba(193,39,45,0.15)]">
+                        <div class="absolute inset-0 -translate-x-full group-hover/card:animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/5 to-transparent z-0"></div>
+                        <div class="relative z-10 flex items-center gap-2 px-4 py-2">
+                            <span class="text-xs font-semibold text-[#F5F1E8] tracking-tight font-grotesk group-hover/card:text-[#C1272D] transition-colors relative z-10">View Work</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-white/70 group-hover/card:text-[#C1272D] group-hover/card:-rotate-45 transition-all duration-300 relative z-10"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+                </button>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none z-30 opacity-50 overflow-hidden"></div>
+            <div class="absolute -top-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -top-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -bottom-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -bottom-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+        </div>
+    </div>
+
+    <div id="work-view" class="view hidden relative z-10 w-full h-screen flex flex-col items-center justify-center pb-16">
+        <div class="absolute top-4 sm:top-8 left-0 right-0 flex flex-col items-center text-center -space-y-1 pointer-events-none z-0">
+            <h1 class="font-grotesk text-[2.8rem] sm:text-[3.5rem] leading-[0.9] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#F5F1E8] to-[#F5F1E8]/60 animate-slide-up delay-400 drop-shadow-2xl uppercase">KEY CLIENT</h1>
+            <h2 class="font-grotesk text-[1.8rem] sm:text-[2.2rem] leading-[0.9] font-bold tracking-tighter text-[#C1272D] animate-slide-up delay-500 drop-shadow-[0_4px_24px_rgba(193,39,45,0.4)] relative uppercase">
+                PROJECTS
+                <div class="absolute inset-0 bg-[#C1272D] blur-3xl opacity-20 -z-10"></div>
+            </h2>
+        </div>
+        <div id="card-stack" class="project-card-stack relative w-[min(280px,68vw)] md:w-[min(320px,30vw)] aspect-[4/5] cursor-grab active:cursor-grabbing z-10 mt-16"></div>
+        
+        <!-- Swipe Instruction Indicator -->
+        <div id="swipe-indicator" class="absolute bottom-32 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-pulse pointer-events-none z-10
+            md:bottom-auto md:top-[65%] md:-translate-y-0 md:translate-x-0 md:left-[calc(50%-320px)] md:right-auto md:flex-col md:items-center">
+            <span class="text-[#f5f1e8] font-grotesk text-[10px] tracking-widest uppercase">Swipe to explore</span>
+            <div class="flex items-center gap-3">
+                <i data-lucide="chevron-left" class="w-3 h-3 text-[#f5f1e8]"></i>
+                <i data-lucide="hand" class="w-4 h-4 text-[#f5f1e8]"></i>
+                <i data-lucide="chevron-right" class="w-3 h-3 text-[#f5f1e8]"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-view" class="view hidden relative z-10 w-full h-screen flex flex-col items-center justify-center pb-20">
+        <div class="absolute top-4 sm:top-6 left-0 right-0 flex flex-col items-center text-center -space-y-1 pointer-events-none z-0">
+            <h1 class="font-grotesk text-[2.6rem] sm:text-[3.2rem] leading-[0.9] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#F5F1E8] to-[#F5F1E8]/60 animate-slide-up delay-400 drop-shadow-2xl uppercase">ABOUT</h1>
+            <h2 class="font-grotesk text-[1.2rem] sm:text-[1.5rem] leading-[0.9] font-bold tracking-tighter text-[#C1272D] animate-slide-up delay-500 drop-shadow-[0_4px_24px_rgba(193,39,45,0.4)] relative uppercase tracking-widest mt-1">
+                ODISHA, INDIA
+                <div class="absolute inset-0 bg-[#C1272D] blur-3xl opacity-20 -z-10"></div>
+            </h2>
+        </div>
+        <div class="about-card relative w-[min(440px,88vw)] max-h-[62vh] shadow-2xl shadow-black/50 bg-[#0A0A0A] group transition-all duration-500 hover:shadow-[#C1272D]/20 border border-[#cbd5e1] z-10 mt-14 flex flex-col">
+            <div class="absolute inset-0 z-0 bg-[#0A0A0A] overflow-hidden pointer-events-none">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/90"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent opacity-90"></div>
+                <div class="absolute bottom-0 right-0 w-3/4 h-1/2 bg-gradient-to-t from-[#C1272D]/30 to-transparent blur-2xl mix-blend-overlay"></div>
+            </div>
+            <div class="relative z-20 flex flex-col justify-between p-5 sm:p-6 gap-3.5">
+                <p class="text-[12px] sm:text-[13px] leading-relaxed text-[#F5F1E8]/90 text-center font-grotesk border-b border-white/5 pb-2.5">Architecting and deploying intelligent, production ready web applications. Specialized in integrating LLMs and Computer Vision to automate complex business workflows.</p>
+                <div class="border border-white/10 bg-[#1a1a1a]/50 backdrop-blur-xl p-3.5 sm:p-4">
+                    <div class="flex items-center justify-between">
+                        <p class="font-grotesk text-[10.5px] uppercase tracking-[0.2em] text-[#C1272D] font-bold">Experience</p>
+                        <p class="text-[10.5px] text-white/40 font-grotesk">May 2025 – June 2026</p>
+                    </div>
+                    <p class="mt-1 font-grotesk text-[13px] sm:text-[14px] font-semibold text-[#F5F1E8]">Freelance Full Stack Developer</p>
+                    <ul class="mt-2 space-y-1.5 font-grotesk text-[10.5px] sm:text-[11.5px] text-white/80">
+                        <li class="flex items-start gap-1.5">
+                            <span class="text-[#C1272D] leading-none text-sm">•</span>
+                            <span>Delivered high-performance web solutions using <strong>AI workflows</strong>.</span>
+                        </li>
+                        <li class="flex items-start gap-1.5">
+                            <span class="text-[#C1272D] leading-none text-sm">•</span>
+                            <span>Led projects end-to-end: dev, APIs, deployment & maintenance.</span>
+                        </li>
+                        <li class="flex items-start gap-1.5">
+                            <span class="text-[#C1272D] leading-none text-sm">•</span>
+                            <span>Engineered scalable apps serving <strong>40K+ users</strong> globally.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="border border-white/10 bg-[#1a1a1a]/50 backdrop-blur-xl p-3 sm:p-3.5">
+                    <div class="flex items-center justify-between">
+                        <p class="font-grotesk text-[10.5px] uppercase tracking-[0.2em] text-[#C1272D] font-bold">Education</p>
+                        <p class="text-[10.5px] text-white/40 font-grotesk">2022 – 2026</p>
+                    </div>
+                    <p class="mt-1 font-grotesk text-[13px] sm:text-[14px] font-semibold text-[#F5F1E8]">B.Tech CSE, CUTM</p>
+                    <p class="text-[10.5px] text-white/60 font-grotesk mt-0.5">CGPA 8.8</p>
+                </div>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none z-30 opacity-50 overflow-hidden"></div>
+            <div class="absolute -top-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -top-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -bottom-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -bottom-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+        </div>
+    </div>
+
+    <div id="resume-view" class="view hidden relative z-10 w-full flex items-center justify-center">
+        <div class="relative w-full max-w-[400px] aspect-[4/5] shadow-2xl shadow-black/50 bg-[#0A0A0A] group transition-all duration-500 hover:shadow-[#C1272D]/20 border border-[#cbd5e1] rounded-[6px]">
+            <div class="absolute inset-0 z-0 bg-[#0A0A0A] overflow-hidden">
+                <!-- Profile Background image (Top aligned) -->
+                <div class="absolute inset-x-0 top-0 h-[65%] w-full pointer-events-none p-4 pb-0 flex justify-center overflow-hidden">
+                    <img src="subham-passport-official.jpg" alt="Subham Biswal Profile" class="w-auto h-[95%] object-contain object-top grayscale opacity-100 mix-blend-normal brightness-90">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0A0A]/40 to-[#0A0A0A]"></div>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent opacity-90"></div>
+                <div class="absolute bottom-0 right-0 w-3/4 h-1/2 bg-gradient-to-t from-[#C1272D]/30 to-transparent blur-2xl mix-blend-overlay"></div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 pb-8 z-20 flex flex-col items-center">
+                <div class="flex flex-col items-center text-center mb-6 w-full">
+                    <h1 class="font-grotesk text-[4.2rem] leading-[0.9] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#F5F1E8] to-[#F5F1E8]/60 drop-shadow-2xl">RESUME</h1>
+                    <div class="mt-4 flex items-center gap-3">
+                        <span class="h-[1px] w-8 bg-gradient-to-r from-transparent to-white/40"></span>
+                        <p class="text-[11px] font-medium text-white/60 tracking-widest uppercase font-grotesk">PDF</p>
+                        <span class="h-[1px] w-8 bg-gradient-to-l from-transparent to-white/40"></span>
+                    </div>
+                </div>
+                <div class="relative group/card cursor-pointer overflow-hidden bg-[#1a1a1a]/60 backdrop-blur-xl border border-white/10 hover:bg-[#252525]/80 transition-all duration-300 hover:border-[#C1272D]/30 hover:shadow-[0_0_30px_rgba(193,39,45,0.15)] flex items-center gap-2 pl-3 pr-4 py-2 w-auto" onclick="window.open('subham-biswal-resume.pdf', '_blank')">
+                    <div class="absolute inset-0 -translate-x-full group-hover/card:animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/5 to-transparent z-0"></div>
+                    <div class="relative z-10 w-6 h-6 bg-gradient-to-br from-[#C1272D] to-[#8a1c20] flex items-center justify-center shadow-lg group-hover/card:scale-105 transition-transform duration-300">
+                        <i data-lucide="download" class="h-3.5 w-3.5 text-white"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-[#F5F1E8] tracking-tight font-grotesk group-hover/card:text-[#C1272D] transition-colors relative z-10">Download Resume</span>
+                </div>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none z-30 opacity-50 overflow-hidden"></div>
+            <div class="absolute -top-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -top-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -bottom-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -bottom-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+        </div>
+    </div>
+
+    <div id="contact-view" class="view hidden relative z-10 w-full flex items-center justify-center">
+        <div class="relative w-full max-w-[400px] aspect-[4/5] shadow-2xl shadow-black/50 bg-[#0A0A0A] group transition-all duration-500 hover:shadow-[#C1272D]/20 border border-[#cbd5e1]">
+            <div class="absolute inset-0 z-0 bg-[#0A0A0A] overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/90"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent opacity-90"></div>
+                <div class="absolute bottom-0 right-0 w-3/4 h-1/2 bg-gradient-to-t from-[#C1272D]/30 to-transparent blur-2xl mix-blend-overlay"></div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 pb-8 z-20 flex flex-col items-center">
+                <div class="flex flex-col items-center text-center mb-6 w-full">
+                    <h1 class="font-grotesk text-[3.4rem] leading-[0.9] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#F5F1E8] to-[#F5F1E8]/60 drop-shadow-2xl">CONTACT</h1>
+                    <div class="mt-4 flex items-center gap-3">
+                        <span class="h-[1px] w-8 bg-gradient-to-r from-transparent to-white/40"></span>
+                        <p class="text-[11px] font-medium text-white/60 tracking-widest uppercase font-grotesk">Odisha, India</p>
+                        <span class="h-[1px] w-8 bg-gradient-to-l from-transparent to-white/40"></span>
+                    </div>
+                </div>
+                <div class="w-full space-y-2">
+                    <a href="tel:+919692530205" class="flex items-center justify-between border border-white/10 bg-[#1a1a1a]/60 backdrop-blur-xl px-3 py-2 hover:border-[#cbd5e1]/50 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-[#C1272D] to-[#8a1c20] flex items-center justify-center shrink-0">
+                                <i data-lucide="phone" class="h-3.5 w-3.5 text-white"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-[#F5F1E8] font-grotesk tracking-wide">+91 9692530205</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/40 group-hover:text-[#C1272D] transition-colors"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
+                    <a href="mailto:subhambiswal5120@gmail.com" class="flex items-center justify-between border border-white/10 bg-[#1a1a1a]/60 backdrop-blur-xl px-3 py-2 hover:border-[#cbd5e1]/50 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-[#C1272D] to-[#8a1c20] flex items-center justify-center shrink-0">
+                                <i data-lucide="mail" class="h-3.5 w-3.5 text-white"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-[#F5F1E8] font-grotesk tracking-wide">subhambiswal5120@gmail.com</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/40 group-hover:text-[#C1272D] transition-colors"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
+                    <a href="https://github.com/subham212" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between border border-white/10 bg-[#1a1a1a]/60 backdrop-blur-xl px-3 py-2 hover:border-[#cbd5e1]/50 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-[#C1272D] to-[#8a1c20] flex items-center justify-center shrink-0">
+                                <i data-lucide="github" class="h-3.5 w-3.5 text-white"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-[#F5F1E8] font-grotesk tracking-wide">GitHub</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/40 group-hover:text-[#C1272D] transition-colors"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/subham-biswal2120" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between border border-white/10 bg-[#1a1a1a]/60 backdrop-blur-xl px-3 py-2 hover:border-[#cbd5e1]/50 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-[#C1272D] to-[#8a1c20] flex items-center justify-center shrink-0">
+                                <i data-lucide="linkedin" class="h-3.5 w-3.5 text-white"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-[#F5F1E8] font-grotesk tracking-wide">LinkedIn</span>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/40 group-hover:text-[#C1272D] transition-colors"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none z-30 opacity-50 overflow-hidden"></div>
+            <div class="absolute -top-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -top-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -bottom-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+            <div class="absolute -bottom-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+        <div class="flex items-center gap-1 rounded-xl border border-white/10 bg-[#0A0A0A]/80 px-2 py-2 shadow-[0_20px_60px_rgba(0,0,0,0.55)] backdrop-blur-xl">
+            <button type="button" data-nav="home" class="nav-item active flex h-11 items-center justify-center gap-2 rounded-lg bg-white/[0.08] px-3.5 transition-all duration-300">
+                <i data-lucide="home" class="h-5 w-5 shrink-0"></i>
+                <span class="nav-label font-grotesk text-[13px] font-medium tracking-tight">home</span>
+            </button>
+            <button type="button" data-nav="work" class="nav-item flex h-11 w-11 items-center justify-center rounded-lg px-3.5 transition-all duration-300 hover:bg-white/[0.05]">
+                <i data-lucide="presentation" class="h-5 w-5 shrink-0"></i>
+                <span class="nav-label hidden font-grotesk text-[13px] font-medium tracking-tight">Projects</span>
+            </button>
+            <button type="button" data-nav="about" class="nav-item flex h-11 w-11 items-center justify-center rounded-lg px-3.5 transition-all duration-300 hover:bg-white/[0.05]">
+                <i data-lucide="user" class="h-5 w-5 shrink-0"></i>
+                <span class="nav-label hidden font-grotesk text-[13px] font-medium tracking-tight">about</span>
+            </button>
+            <button type="button" data-nav="resume" class="nav-item flex h-11 w-11 items-center justify-center rounded-lg px-3.5 transition-all duration-300 hover:bg-white/[0.05]">
+                <i data-lucide="file-text" class="h-5 w-5 shrink-0"></i>
+                <span class="nav-label hidden font-grotesk text-[13px] font-medium tracking-tight">resume</span>
+            </button>
+            <button type="button" data-nav="contact" class="nav-item flex h-11 w-11 items-center justify-center rounded-lg px-3.5 transition-all duration-300 hover:bg-white/[0.05]">
+                <i data-lucide="mail" class="h-5 w-5 shrink-0"></i>
+                <span class="nav-label hidden font-grotesk text-[13px] font-medium tracking-tight">Contact</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        const PROJECTS = [
+            {
+                title: "Esports Tournament Platform",
+                line: "AI-Powered Scoring Engine",
+                image: "assets/eagle-esport-site.webp",
+                points: [
+                    "Built a <strong>Full Stack Esports Platform</strong> for end-to-end tournament management.",
+                    "Created an <strong>AI Magic Point Scanner</strong> via Google Gemini <strong>Vision API</strong>, saving 90% of data entry time.",
+                    "<strong>Engineered advanced prompts</strong> to extract JSON player rankings from complex images.",
+                    "Built a <strong>Human-in-the-Loop</strong> UI for real-time AI verification."
+                ],
+                live: "https://eagleesport.com",
+                liveLabel: "eagleesport.com"
+            },
+            {
+                title: "University Conference Website",
+                line: "Civil Department, CUTM",
+                image: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1486&auto=format&fit=crop",
+                points: [
+                    "Official university conference website for a Civil Engineering department event.",
+                    "Secure deployment with HTTPS, optimized domain configuration and enhanced performance for live users."
+                ],
+                live: "https://suchid.cutm.ac.in",
+                liveLabel: "suchid.cutm.ac.in"
+            },
+            {
+                title: "Business Landing Website",
+                line: "Digital Marketing Client Project",
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1415&auto=format&fit=crop",
+                points: [
+                    "High converting landing page to showcase services and generate leads.",
+                    "Worked directly with the client to align the design with branding and marketing goals."
+                ],
+                live: "https://onexpass.pages.dev",
+                liveLabel: "onexpass.pages.dev"
+            }
+        ];
+
+        const views = {
+            home: document.getElementById("home-view"),
+            work: document.getElementById("work-view"),
+            about: document.getElementById("about-view"),
+            resume: document.getElementById("resume-view"),
+            contact: document.getElementById("contact-view")
+        };
+        const cardStack = document.getElementById("card-stack");
+        const CARD_COUNT = PROJECTS.length;
+        let activeIndex = 0;
+        let dragStartX = 0;
+        let dragX = 0;
+        let dragging = false;
+        let lastX = 0;
+        let lastT = 0;
+        let velocity = 0;
+
+        function buildGallery() {
+            if (cardStack.children.length) return;
+            PROJECTS.forEach(function (project) {
+                const article = document.createElement("article");
+                article.className = "profile-card absolute inset-0 shadow-2xl shadow-black/50";
+            article.innerHTML =
+                '<div class="floating-img"><img src="' + project.image + '" alt="' + project.title + '" class="h-full w-full object-cover object-top brightness-[0.9] contrast-[1.05]"></div>' +
+                '<div class="absolute inset-0 bg-[#0A0A0A] overflow-hidden">' +
+                    '<div class="absolute inset-0 z-0 bg-[#0A0A0A]"></div>' +
+                    '<div class="relative z-10 flex h-full flex-col">' +
+                        '<div class="relative flex flex-1 flex-col px-4 pt-4 pb-4">' +
+                            '<p class="font-grotesk text-[8.5px] uppercase tracking-[0.28em] text-[#C1272D]">' + project.line + '</p>' +
+                            '<h3 class="font-grotesk text-[1.12rem] leading-[1.15] font-bold text-[#F5F1E8] mt-1">' + project.title + '</h3>' +
+                            '<ul class="mt-2 space-y-1">' +
+                                project.points.map(function (p) {
+                                    return '<li class="flex items-start gap-2 text-[9.5px] font-grotesk leading-relaxed text-[#F5F1E8]/70"><span class="mt-[5px] h-1 w-1 shrink-0 rounded-full bg-[#C1272D] shadow-[0_0_8px_rgba(193,39,45,0.7)]"></span><span>' + p + '</span></li>';
+                                }).join('') +
+                            '</ul>' +
+                            '<a href="' + project.live + '" target="_blank" rel="noopener noreferrer" class="mt-auto mb-1 inline-flex items-center gap-1.5 self-start bg-[#1a1a1a]/70 px-2.5 py-1.5 border border-white/10 text-[9.5px] font-grotesk font-medium text-[#F5F1E8] hover:border-[#C1272D]/40 hover:bg-[#C1272D]/10 transition-all duration-300">' +
+                                project.liveLabel +
+                                '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>' +
+                            '</a>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="absolute bottom-0 right-0 w-3/4 h-1/2 bg-gradient-to-t from-[#C1272D]/20 to-transparent blur-2xl mix-blend-overlay pointer-events-none z-20"></div>' +
+                    '<div class="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none z-30 opacity-50"></div>' +
+                '</div>' +
+                '<div class="absolute -top-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>' +
+                '<div class="absolute -top-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>' +
+                '<div class="absolute -bottom-[2.5px] -left-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>' +
+                '<div class="absolute -bottom-[2.5px] -right-[2.5px] w-[6px] h-[6px] bg-white border border-[#cbd5e1] z-50"></div>' +
+                '<div class="card-dim absolute inset-0 z-40 bg-black/70 pointer-events-none opacity-0"></div>';
+                cardStack.appendChild(article);
+            });
+            layoutStack(0, true);
+        }
+
+        function layoutStack(shift, animate) {
+            const cards = cardStack.querySelectorAll(".profile-card");
+            const width = cardStack.clientWidth || 360;
+            cards.forEach(function (card, i) {
+                const offset = i - activeIndex;
+                const dim = card.querySelector(".card-dim");
+                card.classList.toggle("animating", !!animate);
+                card.classList.toggle("card-active", offset === 0 && shift === 0);
+                if (Math.abs(offset) > 2) {
+                    card.style.transform = "translateX(" + (offset * width * 0.72 + shift) + "px) scale(0.78)";
+                    card.style.opacity = "0";
+                    card.style.filter = "blur(8px)";
+                    card.style.zIndex = "1";
+                    dim.style.opacity = "0.85";
+                    return;
+                }
+                const x = offset * width * 0.58 + shift;
+                const scale = offset === 0 ? 1 : 0.86;
+                const yShift = offset === 0 ? 0 : 35;
+                const baseTransform = "translateX(" + x + "px) scale(" + scale + ") translateY(" + yShift + "px)";
+                card.style.transform = baseTransform;
+                card.style.opacity = offset === 0 ? "1" : "0.95";
+                card.style.filter = offset === 0 ? "blur(0px)" : "blur(1.5px)";
+                card.style.zIndex = String(20 - Math.abs(offset));
+                dim.style.opacity = offset === 0 ? "0" : String(0.45 + Math.abs(offset) * 0.18);
+            });
+        }
+
+        function goTo(index) {
+            activeIndex = Math.max(0, Math.min(CARD_COUNT - 1, index));
+            dragX = 0;
+            layoutStack(0, true);
+        }
+
+        function setActiveNav(name) {
+            document.querySelectorAll(".nav-item").forEach(function (item) {
+                const isActive = item.getAttribute("data-nav") === name;
+                item.classList.toggle("active", isActive);
+                item.classList.toggle("bg-white/[0.08]", isActive);
+                item.classList.toggle("w-11", !isActive);
+                item.querySelector(".nav-label").classList.toggle("hidden", !isActive);
+            });
+            lucide.createIcons({ attrs: { "stroke-width": 1.5 } });
+        }
+
+        function showView(name) {
+            Object.keys(views).forEach(function (key) {
+                views[key].classList.toggle("hidden", key !== name);
+            });
+            if (name === "work") {
+                buildGallery();
+                activeIndex = 0;
+                dragX = 0;
+                layoutStack(0, true);
+            }
+            setActiveNav(name);
+        }
+
+        function onPointerDown(e) {
+            if (views.work.classList.contains("hidden")) return;
+            dragging = true;
+            dragStartX = e.clientX;
+            lastX = e.clientX;
+            lastT = Date.now();
+            velocity = 0;
+            views.work.setPointerCapture(e.pointerId);
+            layoutStack(dragX, false);
+        }
+
+        function onPointerMove(e) {
+            if (!dragging) return;
+            const now = Date.now();
+            const dx = e.clientX - lastX;
+            const dt = Math.max(now - lastT, 1);
+            velocity = dx / dt;
+            lastX = e.clientX;
+            lastT = now;
+            dragX = e.clientX - dragStartX;
+            if (activeIndex === 0 && dragX > 0) dragX *= 0.28;
+            if (activeIndex === CARD_COUNT - 1 && dragX < 0) dragX *= 0.28;
+            layoutStack(dragX, false);
+        }
+
+        function onPointerUp() {
+            if (!dragging) return;
+            dragging = false;
+            const width = cardStack.clientWidth || 360;
+            const shouldNext = dragX < -width * 0.18 || velocity < -0.45;
+            const shouldPrev = dragX > width * 0.18 || velocity > 0.45;
+            if (shouldNext) goTo(activeIndex + 1);
+            else if (shouldPrev) goTo(activeIndex - 1);
+            else goTo(activeIndex);
+        }
+
+        views.work.addEventListener("pointerdown", onPointerDown);
+        views.work.addEventListener("pointermove", onPointerMove);
+        views.work.addEventListener("pointerup", onPointerUp);
+        views.work.addEventListener("pointercancel", onPointerUp);
+        views.work.addEventListener("wheel", function (e) {
+            if (views.work.classList.contains("hidden")) return;
+            if (Math.abs(e.deltaX) < 8 && Math.abs(e.deltaY) < 8) return;
+            e.preventDefault();
+            if (e.deltaX > 20 || e.deltaY > 20) goTo(activeIndex + 1);
+            else if (e.deltaX < -20 || e.deltaY < -20) goTo(activeIndex - 1);
+        }, { passive: false });
+
+        document.getElementById("view-work-btn").addEventListener("click", function () {
+            showView("work");
+        });
+
+        document.querySelectorAll(".nav-item").forEach(function (item) {
+            item.addEventListener("click", function () {
+                showView(item.getAttribute("data-nav"));
+            });
+        });
+
+        lucide.createIcons({ attrs: { "stroke-width": 1.5 } });
+    </script>
+
+</body>
+</html>
